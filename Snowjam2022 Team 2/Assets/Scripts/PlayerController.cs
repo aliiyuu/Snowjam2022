@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private int choppingTime; //time to chop down a tree
 
-
+    [SerializeField] //need to see it in editor for testing
     private int health; //health. 
     private int maxHealth;
     [SerializeField] //so you can see freeze levels in editor
@@ -217,6 +217,11 @@ void Start()
         {
             freeze = maxFreeze;
         }
+    }
+
+    public float GetFreeze()
+    {
+        return freeze;
     }
 }
 
