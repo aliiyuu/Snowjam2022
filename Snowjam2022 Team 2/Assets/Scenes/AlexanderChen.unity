@@ -1081,20 +1081,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   titleSceneName: 
-  fadeTransition: {fileID: 0}
+  fadeTransition: {fileID: 1315264515}
   fadeSpeed: 1
   menus: []
-  healthMask: {fileID: 0}
+  healthMask: {fileID: 866429638}
   healthMaskRange:
+  - 190
   - 0
-  - 0
-  temperatureMask: {fileID: 0}
+  temperatureMask: {fileID: 253276586}
   temperatureMaskRange:
+  - 170
   - 0
-  - 0
-  timeMask: {fileID: 0}
+  timeMask: {fileID: 178350781}
   timeMaskRange:
-  - 0
+  - 150
   - 0
 --- !u!1 &811575323
 GameObject:
