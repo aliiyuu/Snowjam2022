@@ -131,15 +131,21 @@ public class GameUI : MonoBehaviour
                 break;
 
             case Screen.Settings:
-                settingsMenu.SetActive(true);
-                menuAnimator.Play("MenuShow");
-                yield return new WaitForSeconds(1f / settings.animationSpeed);
+                if (!inventory.activeSelf)
+                {
+                    settingsMenu.SetActive(true);
+                    menuAnimator.Play("MenuShow");
+                    yield return new WaitForSeconds(1f / settings.animationSpeed);
+                }
                 break;
 
             case Screen.Inventory:
-                inventory.SetActive(true);
-                menuAnimator.Play("MenuShow");
-                yield return new WaitForSeconds(1f / settings.animationSpeed);
+                if (!settingsMenu.activeSelf)
+                {
+                    inventory.SetActive(true);
+                    menuAnimator.Play("MenuShow");
+                    yield return new WaitForSeconds(1f / settings.animationSpeed);
+                }
                 break;
 
         }
