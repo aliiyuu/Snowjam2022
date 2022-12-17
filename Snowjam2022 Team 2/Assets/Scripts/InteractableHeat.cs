@@ -20,7 +20,7 @@ public class InteractableHeat : Interactable
 
     }
 
-    public override void Interact(PlayerInteract playerInteract)
+    public override void Interact(PlayerController playerController)
     {
         if(heatSource.player.GetItem("wood") > 0 && heatSource.GetHeatLevel() < heatSource.GetMaxHeat())
         {

@@ -14,12 +14,12 @@ public class HeatSource : MonoBehaviour
 
     
     private bool playerInRadius;
-    public PlayerInteract player;
+    public PlayerController player;
 
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.Find("Player").GetComponent<PlayerInteract>();
+        player = GameObject.Find("Player").GetComponent<PlayerController>();
         playerInRadius = false; //change for starting campfire, probably?
     }
 

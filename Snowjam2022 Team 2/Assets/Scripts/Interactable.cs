@@ -9,11 +9,16 @@ public class Interactable : MonoBehaviour
     private string itemName;
 
     //defaults to picking up
-    public virtual void Interact(PlayerInteract playerInteract)//GameObject player)
+    public virtual void Interact(PlayerController playerController)//GameObject player)
     {
-        //PlayerInteract playerInteract = player.GetComponent<PlayerInteract>();
-        playerInteract.AddItem(itemName);
+        //PlayerController playerController = player.GetComponent<PlayerController>();
+        playerController.AddItem(itemName);
         Destroy(gameObject); //remove self from world
+    }
+
+    public virtual void HoldInteract(PlayerController playerController)
+    {
+        //pass
     }
 
     public string GetName()
