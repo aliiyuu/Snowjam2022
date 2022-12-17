@@ -33,11 +33,9 @@ public class SceneUI : MonoBehaviour
     private GameObject settingsMenu;
     private GameObject inventory;
 
-    // Start is called before the first frame update
     void Start()
     {
         fadeAnimator = fadeTransition.GetComponent<Animator>();
-        fadeAnimator.speed = fadeSpeed;
         StartCoroutine(FadeButtonPressed("in"));
 
         for (int i = 0; i < menus.Length; i++)
@@ -62,11 +60,9 @@ public class SceneUI : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     void Update()
     {
-        //Debug.Log(selectedMenu);
-        
+        fadeAnimator.speed = fadeSpeed;
     }
     public void Title()
     {
