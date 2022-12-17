@@ -6,18 +6,18 @@ public class Interactable : MonoBehaviour
 {
 
     [SerializeField]
-    string itemName;
+    private string itemName;
 
     //defaults to picking up
-    public void interact(PlayerInteract playerInteract)//GameObject player)
+    public void Interact(PlayerInteract playerInteract)//GameObject player)
     {
         //PlayerInteract playerInteract = player.GetComponent<PlayerInteract>();
-        playerInteract.addItem(itemName);
+        playerInteract.AddItem(itemName);
         Destroy(gameObject); //remove self from world
     }
 
-    public void test()
+    public string GetName()
     {
-        Debug.Log("A");
+        return itemName;
     }
 }
