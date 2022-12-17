@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class Inventory : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class Inventory : MonoBehaviour
 
     private GameObject[] itemSlots;
     private Dictionary<string, int> itemDict;
+    [SerializeField] Sprite nullItemSprite;
     [SerializeField] Sprite[] itemSprites;
     [SerializeField] string[] itemList = {"wood"};
 
@@ -31,20 +33,35 @@ public class Inventory : MonoBehaviour
         int itemSlot = 0;
         foreach(KeyValuePair<string, int> item in itemDict)
         {
+            Debug.Log(item);
             if (itemList.Contains(item.Key))
             {
+                // Find the index of the sprite in itemList
+                int spriteIndex = 0;
+                while (!itemList[spriteIndex].Equals(item.Key))
+                {
+                    spriteIndex++;
+                }
 
                 // Update Icon at itemSlot
-
+                itemSlots[itemSlot].GetComponentsInChildren<Image>()[1].sprite = itemSprites[spriteIndex];
 
                 // Update Count at itemSlot
+                itemSlots[itemSlot].GetComponentInChildren<TMP_Text>().text = "" + item.Value;
 
-
+                itemSlot++;
             }
             else
             {
                 Debug.Log("Item not found, define the object in the Inventory");
             }
+        }
+        // Blank out the rest of the inventory slots
+        while (itemSlot < itemSlots.Length)
+        {
+            itemSlots[itemSlot].GetComponentsInChildren<Image>()[1].sprite = nullItemSprite;
+            itemSlots[itemSlot].GetComponentInChildren<TMP_Text>().text = "";
+            itemSlot++;
         }
 
         int itemSlotIndex = 0;
