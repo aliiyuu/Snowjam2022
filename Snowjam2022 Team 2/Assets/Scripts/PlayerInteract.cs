@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerInteract : MonoBehaviour
 {
     private Dictionary<string, int> inv = new Dictionary<string, int>();
-    //private List<Interactable> interactList = new List<Interactable>();
+    //private List<Interactable> interactList = new List<Interactable>(); //if this is needed, attatch a script to the objects that inform the player of ontriggerleave() so you can remove the right one?
     private Interactable lastInteract;
     //private string lastInteractName; useless, unless pick up items are overlapping for some reason
 
