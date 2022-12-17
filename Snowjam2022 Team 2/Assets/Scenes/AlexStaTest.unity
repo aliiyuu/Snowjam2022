@@ -3115,6 +3115,7 @@ MonoBehaviour:
     m_Bits: 64
   attackDamage: 1
   attackCooldown: 0.5
+  alert: {fileID: 1109538768}
 --- !u!212 &1375485712
 SpriteRenderer:
   m_ObjectHideFlags: 0

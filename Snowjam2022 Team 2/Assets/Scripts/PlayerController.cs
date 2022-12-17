@@ -52,9 +52,18 @@ public class PlayerController : MonoBehaviour
     private float attackCooldownTimer;
 
 
+    //fishing
+    private bool catchChance;
+    private bool fishing;
 
-// Start is called before the first frame update
-void Start()
+    //alert
+    [SerializeField] GameObject alert;
+
+
+    // Start is called before the first frame update
+
+        //changed to awake for efficiency
+    void Awake()
     {
         health = 100; //who knows, maybe up this
         maxHealth = 100;
@@ -120,6 +129,23 @@ void Start()
         // Update UI
         gameUI.SetHealthUI(health);
         gameUI.SetTemperatureUI(100-freeze);
+
+
+        //fishing
+
+        //cancel fish if move
+        if (fishing && (Input.GetAxisRaw("Vertical") != 0 || Input.GetAxisRaw("Horizontal") != 0))
+        {
+            Debug.Log("fishing canceled :(((");
+            fishing = false;
+        }
+        if (catchChance && Input.GetMouseButtonDown(0))
+        {
+            AddItem("fish");
+            catchChance = false;
+            fishing = false;
+        }
+
     }
 
     //move player
@@ -347,6 +373,38 @@ void Start()
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 
+
+    //alert (it's fishin' time)
+
+public void Fish()
+    {
+        fishing = true;
+        StartCoroutine(StartFish());
+    }
+    
+
+
+    private IEnumerator StartFish()
+    {
+        
+        yield return new WaitForSeconds(Random.Range(5, 10));
+        if(fishing)
+        {
+            catchChance = true;
+            Debug.Log("FISH TIME");
+            StartCoroutine(Alert());
+            yield return new WaitForSeconds(1);
+            catchChance = false;
+            fishing = false;
+        }
+    }
+    
+    private IEnumerator Alert()
+    {
+        alert.SetActive(true);
+        yield return new WaitForSeconds(1);
+        alert.SetActive(false);
+    }
 }
 
 
