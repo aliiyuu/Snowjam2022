@@ -12,15 +12,29 @@ public class PlayerInteract : MonoBehaviour
     //private string lastInteractName; useless, unless pick up items are overlapping for some reason
 
 
-
+    [SerializeField]
     private int heatLevel; //how warm the player is
 
     [SerializeField]
-    int choppingTime; //time to chop down a tree
+    private int choppingTime; //time to chop down a tree
+
+
+    private int health; //health. 
+    private int maxHealth;
+    [SerializeField] //so you can see freeze levels in editor
+    private float freeze; //how frozen the player is.
+    private float maxFreeze;
+
+
 
     // Start is called before the first frame update
     void Start()
     {
+        health = 100; //who knows, maybe up this
+        maxHealth = 100;
+        freeze = 0;
+        maxFreeze = 100;
+
         heatLevel = 0; //maybe change
         inv["torch"] = 0; //this one needs to be here 
 
@@ -49,6 +63,7 @@ public class PlayerInteract : MonoBehaviour
             UseTorch(); //TODO
         }
 
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -72,7 +87,7 @@ public class PlayerInteract : MonoBehaviour
     }
 
 
-
+    //inventory
     public void AddItem(string item)
     {
         try
@@ -114,12 +129,16 @@ public class PlayerInteract : MonoBehaviour
 
     }
 
+
+    //torch
     private void UseTorch()
     {
         inv["torch"] -= 1;
         Debug.Log("torch moment");
     }
 
+
+    //heat
     public int GetHeat()
     {
         return heatLevel;
@@ -130,9 +149,51 @@ public class PlayerInteract : MonoBehaviour
         heatLevel += heatToAdd;
     }
 
+
+    //trees
     public int GetChoppingTime()
     {
         return choppingTime;
+    }
+
+
+    //health/damage
+    public int GeHealth()
+    {
+        return health;
+    }
+
+    public void ChangeHealth(int healthToAdd)
+    {
+        health += healthToAdd;
+        if(health > maxHealth)
+        {
+            health = maxHealth;
+        }
+        else if (health <= 0)
+        {
+            Death();
+        }
+    }
+
+    public void Death()
+    {
+        Debug.Log("You Died. RIP.");
+    }
+
+    //freezing
+    public void ChangeFreeze(float freezeToAdd)
+    {
+        Debug.Log(freezeToAdd);
+        freeze += freezeToAdd;
+        if (freeze < 0)
+        {
+            freeze = 0;
+        }
+        else if (freeze > maxFreeze)
+        {
+            freeze = maxFreeze;
+        }
     }
 }
 
