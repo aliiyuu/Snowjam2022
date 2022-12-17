@@ -7,7 +7,7 @@ using UnityEngine.UI;
 /// <summary>
 /// Handles loading/transitioning scenes, along with Main Menu operations
 /// </summary>
-public class SceneUI : MonoBehaviour
+public class GameUI : MonoBehaviour
 {
     enum Screen
     {
