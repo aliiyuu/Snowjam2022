@@ -341,13 +341,15 @@ public class PlayerController : MonoBehaviour
     public void craft(CraftableItem item)
     {
         bool success = true;
+        Dictionary<string, int> tempInv = inv;
+
         foreach (string material in item.requiredMaterials)
         {
             try
             {
-                if(inv[material] > 0)
+                if(tempInv[material] > 0)
                 {
-                    inv[material] -= 1;
+                    tempInv[material] -= 1;
                 }
                 else
                 {
@@ -363,7 +365,9 @@ public class PlayerController : MonoBehaviour
         }
         if(success)
         {
-            inv[item.itemName] += 1; //todo; handle the different types
+            tempInv[item.itemName] += 1; //todo; handle the different types
+
+            inv = tempInv;
         }
     }
 
