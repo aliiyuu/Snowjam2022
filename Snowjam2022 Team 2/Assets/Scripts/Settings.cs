@@ -11,8 +11,8 @@ public class Settings : MonoBehaviour
     public float animationSpeed = 1f;
     public int difficulty = 1;
 
-    public float[] difficultyRadii = { 300f, 600f, 900f };
-    public float enemySpawnRateMultiplier = 1f;
+    public float[] zones = { 300f, 600f, 900f };
+    public float enemySpawnRate = 1f;
 
     // Start is called before the first frame update
     void Awake()
