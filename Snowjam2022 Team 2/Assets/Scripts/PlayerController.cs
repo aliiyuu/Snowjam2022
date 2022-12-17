@@ -207,7 +207,7 @@ void Start()
     //freezing
     public void ChangeFreeze(float freezeToAdd)
     {
-        Debug.Log(freezeToAdd);
+        //Debug.Log(freezeToAdd);
         freeze += freezeToAdd;
         if (freeze < 0)
         {
