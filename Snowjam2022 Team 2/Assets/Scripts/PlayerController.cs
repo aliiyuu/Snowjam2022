@@ -188,7 +188,7 @@ void Start()
 
 
     //health/damage
-    public int GeHealth()
+    public int GetHealth()
     {
         return health;
     }
