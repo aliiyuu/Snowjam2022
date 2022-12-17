@@ -192,6 +192,18 @@ void Start()
 
     }
 
+    public Dictionary<string, int> GetDict()
+    {
+        try
+        {
+            return inv;
+        }
+        catch
+        {
+            return null;
+        }
+
+    }
 
     //torch
     private void UseTorch()
