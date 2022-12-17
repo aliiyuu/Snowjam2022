@@ -22,12 +22,10 @@ public class GameUI : MonoBehaviour
     [SerializeField] private string titleSceneName;
     [SerializeField] private GameObject fadeTransition;
     private Animator fadeAnimator;
-    [SerializeField] private float fadeSpeed = 1f;
+    [SerializeField] private float fadeSpeed = 4f;
     private Screen selectedMenu = Screen.Title;
     private Screen previousMenu;
     [SerializeField] GameObject[] menus;
-    private GameObject helpMenu;
-    private GameObject creditsMenu;
     private GameObject settingsMenu;
     private GameObject inventory;
 
@@ -100,7 +98,7 @@ public class GameUI : MonoBehaviour
 
     public void Back() // Go back to the Title or Play screen from the UI
     {
-        selectedMenu = previousMenu;
+        selectedMenu = Screen.Play;
         StartCoroutine(FadeButtonPressed("both"));
     }
 
