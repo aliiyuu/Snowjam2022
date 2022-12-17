@@ -73,7 +73,7 @@ public class SceneUI : MonoBehaviour
 
     public void SetHealthUI(float percent)
     {
-        healthMask.transform.position = new Vector3(percent / 100f * (healthMaskRange[1] - healthMaskRange[0]) + healthMaskRange[0], healthMask.transform.position.y, healthMask.transform.position.z);
+        healthMask.GetComponent<RectMask2D>().padding = new Vector4(healthMask.GetComponent<RectMask2D>().padding.x, healthMask.GetComponent<RectMask2D>().padding.y, percent / 100f * (healthMaskRange[1] - healthMaskRange[0]) + healthMaskRange[0], healthMask.GetComponent<RectMask2D>().padding.w);
     }
 
     public void SetTemperatureUI(float percent)
@@ -83,7 +83,7 @@ public class SceneUI : MonoBehaviour
 
     public void SetTimeUI(float percent)
     {
-        timeMask.transform.position = new Vector3(percent / 100f * (timeMaskRange[1] - timeMaskRange[0]) + timeMaskRange[0], timeMask.transform.position.y, timeMask.transform.position.z);
+        timeMask.GetComponent<RectMask2D>().padding = new Vector4(timeMask.GetComponent<RectMask2D>().padding.x, timeMask.GetComponent<RectMask2D>().padding.y, percent / 100f * (timeMaskRange[1] - timeMaskRange[0]) + timeMaskRange[0], timeMask.GetComponent<RectMask2D>().padding.w);
     }
 
     public void Title()

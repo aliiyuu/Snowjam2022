@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     private float freeze; //how frozen the player is.
     private float maxFreeze;
 
+    private SceneUI sceneUI; // Get sceneUI
 
 
     //player movement
@@ -53,6 +54,8 @@ void Start()
 
         rb = this.GetComponent<Rigidbody2D>();
         animator = this.GetComponent<Animator>();
+
+        sceneUI = GameObject.Find("Canvas").GetComponent<SceneUI>();
     }
 
     // Update is called once per frame
@@ -80,6 +83,10 @@ void Start()
         {
             UseTorch(); //TODO
         }
+
+        // Update UI
+        sceneUI.SetHealthUI(health);
+        sceneUI.SetTemperatureUI(100-freeze);
     }
 
     //move player

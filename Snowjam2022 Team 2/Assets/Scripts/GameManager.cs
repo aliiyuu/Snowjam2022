@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
 
 
     private PlayerController playerController;
+    private SceneUI sceneUI; // Get sceneUI
 
     // Start is called before the first frame update
     void Start()
@@ -32,12 +33,14 @@ public class GameManager : MonoBehaviour
         tempLevel = 0;
         waveNum = 1;
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
+        sceneUI = GameObject.Find("Canvas").GetComponent<SceneUI>();
     }
 
     // Update is called once per frame
     void Update()
     {
         timer += Time.deltaTime;
+        sceneUI.SetTimeUI((1 - (timer % waveInterval)/waveInterval) * 100);
 
         //enemies
         if (timer >= waveNum * waveInterval)
