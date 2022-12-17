@@ -4,23 +4,27 @@ using UnityEngine;
 
 public class PlayerInteract : MonoBehaviour
 {
-    private Dictionary<string, int> inv = new Dictionary<string, int>();
+    private Dictionary<string, int> inv = new Dictionary<string, int>(); //inventory
+
+
     //private List<Interactable> interactList = new List<Interactable>(); //if this is needed, attatch a script to the objects that inform the player of ontriggerleave() so you can remove the right one?
-    private Interactable lastInteract;
+    private Interactable lastInteract; //tracks what you can interact with (most recent collision with an interactable)
     //private string lastInteractName; useless, unless pick up items are overlapping for some reason
 
 
 
-    private int heatLevel;
+    private int heatLevel; //how warm the player is
 
     [SerializeField]
-    int heatDegradeTime;
+    int choppingTime; //time to chop down a tree
 
     // Start is called before the first frame update
     void Start()
     {
         heatLevel = 0; //maybe change
-        inv["torch"] = 0;
+        inv["torch"] = 0; //this one needs to be here 
+
+        //numbers for testing, mostly
         inv["wood"] = 3;
     }
 
@@ -34,12 +38,17 @@ public class PlayerInteract : MonoBehaviour
             //interactList[0].Interact(this);
             //interactList.RemoveAt(0);
         }
+        if (Input.GetKey(KeyCode.E) && lastInteract != null)// && interactList.Count > 0)
+        {
+            lastInteract.HoldInteract(this); //used for tree chopping/other long interactions
+        }
 
         //torch
-        if(Input.GetKeyDown(KeyCode.Q) && inv["torch"] > 0)
+        if (Input.GetKeyDown(KeyCode.Q) && inv["torch"] > 0)
         {
-            UseTorch();
+            UseTorch(); //TODO
         }
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -120,6 +129,12 @@ public class PlayerInteract : MonoBehaviour
     {
         heatLevel += heatToAdd;
     }
+
+    public int GetChoppingTime()
+    {
+        return choppingTime;
+    }
 }
+
 
 
