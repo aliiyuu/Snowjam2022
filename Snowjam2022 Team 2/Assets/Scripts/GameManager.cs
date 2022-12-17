@@ -15,6 +15,11 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private int[] tempChangeTimings;
 
+    [SerializeField]
+    private float freezeMultiplier;
+
+
+    private PlayerInteract playerInteract;
 
     // Start is called before the first frame update
     void Start()
@@ -22,16 +27,21 @@ public class GameManager : MonoBehaviour
         timer = 0;
         tempLevel = 0;
         waveNum = 1;
+        playerInteract = GameObject.Find("Player").GetComponent<PlayerInteract>();
     }
 
     // Update is called once per frame
     void Update()
     {
         timer += Time.deltaTime;
+
+        //enemies
         if (timer >= waveNum * waveInterval)
         {
             spawnWave();
         }
+
+        //temperature decrease
         if (tempLevel < tempChangeTimings.Length)
         {
             if (timer >= tempChangeTimings[tempLevel])
@@ -39,6 +49,12 @@ public class GameManager : MonoBehaviour
                 tempDecrease();
             }
         }
+
+
+        //freeze (or thaw) the player
+        playerInteract.ChangeFreeze((tempLevel - playerInteract.GetHeat()) * Time.deltaTime * freezeMultiplier);
+
+        //check freeze damage after freezing player
     }
 
     private void tempDecrease()

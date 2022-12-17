@@ -16,6 +16,11 @@ public class Interactable : MonoBehaviour
         Destroy(gameObject); //remove self from world
     }
 
+    public virtual void HoldInteract(PlayerInteract playerInteract)
+    {
+        //pass
+    }
+
     public string GetName()
     {
         return itemName;

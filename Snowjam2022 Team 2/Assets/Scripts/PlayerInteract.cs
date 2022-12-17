@@ -4,23 +4,41 @@ using UnityEngine;
 
 public class PlayerInteract : MonoBehaviour
 {
-    private Dictionary<string, int> inv = new Dictionary<string, int>();
+    private Dictionary<string, int> inv = new Dictionary<string, int>(); //inventory
+
+
     //private List<Interactable> interactList = new List<Interactable>(); //if this is needed, attatch a script to the objects that inform the player of ontriggerleave() so you can remove the right one?
-    private Interactable lastInteract;
+    private Interactable lastInteract; //tracks what you can interact with (most recent collision with an interactable)
     //private string lastInteractName; useless, unless pick up items are overlapping for some reason
 
 
-
-    private int heatLevel;
+    [SerializeField]
+    private int heatLevel; //how warm the player is
 
     [SerializeField]
-    int heatDegradeTime;
+    private int choppingTime; //time to chop down a tree
+
+
+    private int health; //health. 
+    private int maxHealth;
+    [SerializeField] //so you can see freeze levels in editor
+    private float freeze; //how frozen the player is.
+    private float maxFreeze;
+
+
 
     // Start is called before the first frame update
     void Start()
     {
+        health = 100; //who knows, maybe up this
+        maxHealth = 100;
+        freeze = 0;
+        maxFreeze = 100;
+
         heatLevel = 0; //maybe change
-        inv["torch"] = 0;
+        inv["torch"] = 0; //this one needs to be here 
+
+        //numbers for testing, mostly
         inv["wood"] = 3;
     }
 
@@ -34,12 +52,18 @@ public class PlayerInteract : MonoBehaviour
             //interactList[0].Interact(this);
             //interactList.RemoveAt(0);
         }
+        if (Input.GetKey(KeyCode.E) && lastInteract != null)// && interactList.Count > 0)
+        {
+            lastInteract.HoldInteract(this); //used for tree chopping/other long interactions
+        }
 
         //torch
-        if(Input.GetKeyDown(KeyCode.Q) && inv["torch"] > 0)
+        if (Input.GetKeyDown(KeyCode.Q) && inv["torch"] > 0)
         {
-            UseTorch();
+            UseTorch(); //TODO
         }
+
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -63,7 +87,7 @@ public class PlayerInteract : MonoBehaviour
     }
 
 
-
+    //inventory
     public void AddItem(string item)
     {
         try
@@ -105,12 +129,16 @@ public class PlayerInteract : MonoBehaviour
 
     }
 
+
+    //torch
     private void UseTorch()
     {
         inv["torch"] -= 1;
         Debug.Log("torch moment");
     }
 
+
+    //heat
     public int GetHeat()
     {
         return heatLevel;
@@ -120,6 +148,54 @@ public class PlayerInteract : MonoBehaviour
     {
         heatLevel += heatToAdd;
     }
+
+
+    //trees
+    public int GetChoppingTime()
+    {
+        return choppingTime;
+    }
+
+
+    //health/damage
+    public int GeHealth()
+    {
+        return health;
+    }
+
+    public void ChangeHealth(int healthToAdd)
+    {
+        health += healthToAdd;
+        if(health > maxHealth)
+        {
+            health = maxHealth;
+        }
+        else if (health <= 0)
+        {
+            Death();
+        }
+    }
+
+    public void Death()
+    {
+        Debug.Log("You Died. RIP.");
+    }
+
+    //freezing
+    public void ChangeFreeze(float freezeToAdd)
+    {
+        Debug.Log(freezeToAdd);
+        freeze += freezeToAdd;
+        if (freeze < 0)
+        {
+            freeze = 0;
+        }
+        else if (freeze > maxFreeze)
+        {
+            freeze = maxFreeze;
+        }
+    }
 }
+
 
 
