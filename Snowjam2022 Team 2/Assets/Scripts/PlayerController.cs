@@ -33,6 +33,9 @@ public class PlayerController : MonoBehaviour
 
     private GameUI gameUI; // Get sceneUI
 
+    //torch
+    int usingTorch;
+    [SerializeField] int torchBurnTime = 30;
 
     //player movement
     public float moveSpeed = 5f;
@@ -65,6 +68,7 @@ public class PlayerController : MonoBehaviour
         //changed to awake for efficiency
     void Awake()
     {
+        usingTorch = 0;
         health = 100; //who knows, maybe up this
         maxHealth = 100;
         isInvulnerable = false;
@@ -78,6 +82,7 @@ public class PlayerController : MonoBehaviour
 
         //numbers for testing, mostly
         inv["wood"] = 3;
+        inv["torch"] = 5;
 
         rb = this.GetComponent<Rigidbody2D>();
         animator = this.GetComponent<Animator>();
@@ -114,7 +119,7 @@ public class PlayerController : MonoBehaviour
         //torch
         if (Input.GetKeyDown(KeyCode.Q) && inv["torch"] > 0)
         {
-            UseTorch(); //TODO
+            StartCoroutine(UseTorch()); //TODO
         }
 
         if(Input.GetMouseButtonDown(0) && attackCooldownTimer <= 0)
@@ -232,12 +237,27 @@ public class PlayerController : MonoBehaviour
     }
 
     //torch
-    private void UseTorch()
+    private IEnumerator UseTorch()
     {
         inv["torch"] -= 1;
         Debug.Log("torch moment");
+        usingTorch += 1; //using an int so if you start burning a second torch it "resets" the timer.
+        yield return new WaitForSeconds(torchBurnTime);
+        usingTorch -= 1;
     }
 
+    public bool UsingTorch()
+    {
+        if (usingTorch > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+            
+    }
 
     //heat
     public int GetHeat()
