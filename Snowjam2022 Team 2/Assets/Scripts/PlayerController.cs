@@ -43,7 +43,13 @@ public class PlayerController : MonoBehaviour
 
     public Animator animator;
 
-
+    //attacking
+    [SerializeField] private Transform attackPoint;
+    [SerializeField] private float attackRange;
+    [SerializeField] private LayerMask enemyLayers;
+    [SerializeField] private int attackDamage;
+    [SerializeField] private float attackCooldown = 0.5f;
+    private float attackCooldownTimer;
 
 
 
@@ -102,6 +108,15 @@ void Start()
             UseTorch(); //TODO
         }
 
+        if(Input.GetMouseButtonDown(0) && attackCooldownTimer <= 0)
+        {
+            Attack();
+            attackCooldownTimer = attackCooldown;
+        }
+        if(attackCooldownTimer > 0)
+        {
+            attackCooldownTimer -= Time.deltaTime;
+        }
         // Update UI
         gameUI.SetHealthUI(health);
         gameUI.SetTemperatureUI(100-freeze);
@@ -292,6 +307,32 @@ void Start()
         {
             inv[item.itemName] += 1; //todo; handle the different types
         }
+    }
+
+
+    //attack
+
+    private void Attack()
+    {
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+        
+        foreach(Collider2D enemy in hitEnemies)
+        {
+            /*
+            if (enemy.tag == "enemy")
+            {
+
+            }*/
+            enemy.GetComponent<Enemy>().GetHit(attackDamage);
+        }
+       
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (attackPoint == null)
+            return;
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 
 }
