@@ -31,7 +31,6 @@ public class GameManager : MonoBehaviour
         if (timer >= waveNum * waveInterval)
         {
             spawnWave();
-            waveNum += 1;
         }
         if (tempLevel < tempChangeTimings.Length)
         {
@@ -62,5 +61,6 @@ public class GameManager : MonoBehaviour
     public void spawnWave()
     {
         Debug.Log("this would be a wave spawn");
+        waveNum += 1;
     }
 }
