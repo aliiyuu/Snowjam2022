@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInteract : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     private Dictionary<string, int> inv = new Dictionary<string, int>(); //inventory
 
@@ -27,8 +27,18 @@ public class PlayerInteract : MonoBehaviour
 
 
 
-    // Start is called before the first frame update
-    void Start()
+    //player movement
+    public float moveSpeed = 5f;
+
+    public Rigidbody2D rb;
+
+    Vector2 movement;
+
+    public Animator animator;
+
+
+// Start is called before the first frame update
+void Start()
     {
         health = 100; //who knows, maybe up this
         maxHealth = 100;
@@ -40,13 +50,22 @@ public class PlayerInteract : MonoBehaviour
 
         //numbers for testing, mostly
         inv["wood"] = 3;
+
+        rb = this.GetComponent<Rigidbody2D>();
+        animator = this.GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        //movement
+        movement.x = Input.GetAxisRaw("Horizontal");
+        movement.y = Input.GetAxisRaw("Vertical");
+        animator.SetFloat("Horizontal", movement.x);
+        animator.SetFloat("Vertical", movement.y);
+        animator.SetFloat("Speed", movement.sqrMagnitude);
         //Debug.Log(heatLevel);
-        if(Input.GetKeyDown(KeyCode.E) && lastInteract != null)// && interactList.Count > 0)
+        if (Input.GetKeyDown(KeyCode.E) && lastInteract != null)// && interactList.Count > 0)
         {
             lastInteract.Interact(this);
             //interactList[0].Interact(this);
@@ -56,14 +75,18 @@ public class PlayerInteract : MonoBehaviour
         {
             lastInteract.HoldInteract(this); //used for tree chopping/other long interactions
         }
-
         //torch
         if (Input.GetKeyDown(KeyCode.Q) && inv["torch"] > 0)
         {
             UseTorch(); //TODO
         }
+    }
 
-
+    //move player
+    void FixedUpdate()
+    {
+        // Movement
+        rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -184,7 +207,7 @@ public class PlayerInteract : MonoBehaviour
     //freezing
     public void ChangeFreeze(float freezeToAdd)
     {
-        Debug.Log(freezeToAdd);
+        //Debug.Log(freezeToAdd);
         freeze += freezeToAdd;
         if (freeze < 0)
         {

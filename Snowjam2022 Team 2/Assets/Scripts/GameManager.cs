@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     private float freezeMultiplier;
 
 
-    private PlayerInteract playerInteract;
+    private PlayerController playerController;
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
         timer = 0;
         tempLevel = 0;
         waveNum = 1;
-        playerInteract = GameObject.Find("Player").GetComponent<PlayerInteract>();
+        playerController = GameObject.Find("Player").GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour
 
 
         //freeze (or thaw) the player
-        playerInteract.ChangeFreeze((tempLevel - playerInteract.GetHeat()) * Time.deltaTime * freezeMultiplier);
+        playerController.ChangeFreeze((tempLevel - playerController.GetHeat()) * Time.deltaTime * freezeMultiplier);
 
         //check freeze damage after freezing player
     }
