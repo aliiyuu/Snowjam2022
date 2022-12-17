@@ -5,6 +5,8 @@ using UnityEngine;
 public class FrozenObject : MonoBehaviour
 {
     [SerializeField] GameObject frozenObject;
+    [SerializeField] GameObject frozenSprite;
+    [SerializeField] GameObject thawSprite;
     [SerializeField] float timeToMeltStage = 5;
 
     private bool melting;
@@ -19,7 +21,7 @@ public class FrozenObject : MonoBehaviour
     void Awake()
     {
         frozenObject.SetActive(false);
-        stage = 3; //may need to change
+        stage = 2; //may need to change
         canMelt = false;
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         meltStageTimer = timeToMeltStage;
@@ -37,10 +39,13 @@ public class FrozenObject : MonoBehaviour
                 {
                     meltStageTimer = timeToMeltStage;
                     stage -= 1;
+                    frozenSprite.SetActive(false);
+                    thawSprite.SetActive(true);
                 }
                 else //fully melted
                 {
                     frozenObject.SetActive(true);
+                    thawSprite.SetActive(false);
                     gameObject.SetActive(false); //turn self off
                 }
             }
