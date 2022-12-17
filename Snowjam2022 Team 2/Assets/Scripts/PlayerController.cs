@@ -6,6 +6,9 @@ public class PlayerController : MonoBehaviour
 {
     private Dictionary<string, int> inv = new Dictionary<string, int>(); //inventory
 
+    //crafting
+    [SerializeField]
+    private List<CraftableItem> craftList;
 
     //private List<Interactable> interactList = new List<Interactable>(); //if this is needed, attatch a script to the objects that inform the player of ontriggerleave() so you can remove the right one?
     private Interactable lastInteract; //tracks what you can interact with (most recent collision with an interactable)
@@ -39,6 +42,9 @@ public class PlayerController : MonoBehaviour
     Vector2 movement;
 
     public Animator animator;
+
+
+
 
 
 // Start is called before the first frame update
@@ -256,6 +262,38 @@ void Start()
     {
         return freeze;
     }
+
+    //crafting
+
+    public void craft(CraftableItem item)
+    {
+        bool success = true;
+        foreach (string material in item.requiredMaterials)
+        {
+            try
+            {
+                if(inv[material] > 0)
+                {
+                    inv[material] -= 1;
+                }
+                else
+                {
+                    success = false;
+                    break;
+                }
+            }
+            catch
+            {
+                success = false;
+                break;
+            }
+        }
+        if(success)
+        {
+            inv[item.itemName] += 1; //todo; handle the different types
+        }
+    }
+
 }
 
 
