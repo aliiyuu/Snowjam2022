@@ -6,6 +6,9 @@ public class PlayerController : MonoBehaviour
 {
     private Dictionary<string, int> inv = new Dictionary<string, int>(); //inventory
 
+    //crafting
+    [SerializeField]
+    private List<CraftableItem> craftList;
 
     //private List<Interactable> interactList = new List<Interactable>(); //if this is needed, attatch a script to the objects that inform the player of ontriggerleave() so you can remove the right one?
     private Interactable lastInteract; //tracks what you can interact with (most recent collision with an interactable)
@@ -39,6 +42,15 @@ public class PlayerController : MonoBehaviour
     Vector2 movement;
 
     public Animator animator;
+
+    //attacking
+    [SerializeField] private Transform attackPoint;
+    [SerializeField] private float attackRange;
+    [SerializeField] private LayerMask enemyLayers;
+    [SerializeField] private int attackDamage;
+    [SerializeField] private float attackCooldown = 0.5f;
+    private float attackCooldownTimer;
+
 
 
 // Start is called before the first frame update
@@ -96,6 +108,15 @@ void Start()
             UseTorch(); //TODO
         }
 
+        if(Input.GetMouseButtonDown(0) && attackCooldownTimer <= 0)
+        {
+            Attack();
+            attackCooldownTimer = attackCooldown;
+        }
+        if(attackCooldownTimer > 0)
+        {
+            attackCooldownTimer -= Time.deltaTime;
+        }
         // Update UI
         gameUI.SetHealthUI(health);
         gameUI.SetTemperatureUI(100-freeze);
@@ -256,6 +277,64 @@ void Start()
     {
         return freeze;
     }
+
+    //crafting
+
+    public void craft(CraftableItem item)
+    {
+        bool success = true;
+        foreach (string material in item.requiredMaterials)
+        {
+            try
+            {
+                if(inv[material] > 0)
+                {
+                    inv[material] -= 1;
+                }
+                else
+                {
+                    success = false;
+                    break;
+                }
+            }
+            catch
+            {
+                success = false;
+                break;
+            }
+        }
+        if(success)
+        {
+            inv[item.itemName] += 1; //todo; handle the different types
+        }
+    }
+
+
+    //attack
+
+    private void Attack()
+    {
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+        
+        foreach(Collider2D enemy in hitEnemies)
+        {
+            /*
+            if (enemy.tag == "enemy")
+            {
+
+            }*/
+            enemy.GetComponent<Enemy>().GetHit(attackDamage);
+        }
+       
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (attackPoint == null)
+            return;
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+    }
+
 }
 
 

@@ -20,8 +20,15 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private int damage = 3;
 
+    [SerializeField] private int health = 10;
+    [SerializeField] private float stunLength = 0.25f;
+    private float stunTimer;
+    private bool stunned;
+
     private void Awake()
     {
+        stunTimer = 0;
+        stunned = false;
         rb = GetComponent<Rigidbody2D>();
         target = FindObjectOfType<PlayerController>().transform; //maybe have an aggro radius?
         playerMask = LayerMask.GetMask("Player");
@@ -31,34 +38,49 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isIdle)
+        if (stunned)
         {
-            idleTimer += Time.deltaTime;
+            if (stunTimer >= stunLength)
+            {
+                stunTimer = 0;
+                stunned = true;
+            }
+            else
+            {
+                stunTimer += Time.deltaTime;
+            }
         }
         else
         {
-            roamTimer += Time.deltaTime;
-        }
-
-        RaycastHit2D raycast = Physics2D.Raycast(transform.position, (target.position - transform.position).normalized, aggroRange, playerMask);
-        // Player is in range --> target player
-        if(aggroRange == 0f || raycast.collider != null)
-        {
-            isAggro = true;
-            moveDirection = (target.position - transform.position).normalized;
-            rb.rotation = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
-        }
-        // Player is not in range --> roam
-        else 
-        {
-            // Was just aggro --> start roaming again
-            if (isAggro)
+            if (isIdle)
             {
-                isAggro = false;
-                InitiateRoaming();
+                idleTimer += Time.deltaTime;
             }
-            // Wasn't just aggro --> continue roaming
-            else HandleRoaming();
+            else
+            {
+                roamTimer += Time.deltaTime;
+            }
+
+            RaycastHit2D raycast = Physics2D.Raycast(transform.position, (target.position - transform.position).normalized, aggroRange, playerMask);
+            // Player is in range --> target player
+            if (aggroRange == 0f || raycast.collider != null)
+            {
+                isAggro = true;
+                moveDirection = (target.position - transform.position).normalized;
+                rb.rotation = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+            }
+            // Player is not in range --> roam
+            else
+            {
+                // Was just aggro --> start roaming again
+                if (isAggro)
+                {
+                    isAggro = false;
+                    InitiateRoaming();
+                }
+                // Wasn't just aggro --> continue roaming
+                else HandleRoaming();
+            }
         }
     }
 
@@ -103,5 +125,21 @@ public class Enemy : MonoBehaviour
         {
             target.GetComponent<PlayerController>().ChangeHealth(-damage);
         }
+    }
+
+    public void GetHit(int damage)
+    {
+        health -= damage;
+        stunned = true; //hitstun
+        if (health <= 0)
+        {
+            Death();
+        }
+    }
+
+    private void Death()
+    {
+        Destroy(gameObject);
+        //Drops?
     }
 }
