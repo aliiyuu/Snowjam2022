@@ -9,14 +9,20 @@ public class PlayerInteract : MonoBehaviour
     private Interactable lastInteract;
     //private string lastInteractName; useless, unless pick up items are overlapping for some reason
 
+
+
+    private int heatLevel;
+
     // Start is called before the first frame update
     void Start()
     {
+        heatLevel = 0; //maybe change
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log(heatLevel);
         if(Input.GetKeyDown(KeyCode.E) && lastInteract != null)// && interactList.Count > 0)
         {
             lastInteract.Interact(this);
@@ -33,6 +39,7 @@ public class PlayerInteract : MonoBehaviour
         if(collision.tag == "Interactable")
         {
             lastInteract = collision.GetComponent<Interactable>();
+            Debug.Log(lastInteract.GetName());
             //lastInteractName = lastInteract.GetName();
             //interactList.Insert(0, obj);
         }
@@ -62,6 +69,16 @@ public class PlayerInteract : MonoBehaviour
         Debug.Log(inv[item]);
     }
 
+
+    public int GetHeat()
+    {
+        return heatLevel;
+    }
+
+    public void ChangeHeat(int heatToAdd)
+    {
+        heatLevel += heatToAdd;
+    }
 }
 
 
