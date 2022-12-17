@@ -23,7 +23,7 @@ public class TitleUI : MonoBehaviour
     [SerializeField] private string gameplaySceneName;
     [SerializeField] private GameObject fadeTransition;
     private Animator fadeAnimator;
-    [SerializeField] private float fadeSpeed = 1f;
+    private Settings settings;
 
     private Screen selectedMenu = Screen.Title;
     private List<Screen> previousMenus = new List<Screen>();
@@ -35,6 +35,8 @@ public class TitleUI : MonoBehaviour
     void Start()
     {
         fadeAnimator = fadeTransition.GetComponent<Animator>();
+        settings = GameObject.FindGameObjectWithTag("Settings").GetComponent<Settings>();
+
         StartCoroutine(FadeButtonPressed("in"));
         previousMenus.Add(selectedMenu);
 
@@ -58,7 +60,7 @@ public class TitleUI : MonoBehaviour
 
     void Update()
     {
-        fadeAnimator.speed = fadeSpeed;
+        fadeAnimator.speed = settings.animationSpeed;
     }
 
     public void Title()
@@ -115,7 +117,7 @@ public class TitleUI : MonoBehaviour
         if (whichFade == "out" || whichFade == "both")
         {
             fadeAnimator.Play("FadeOut");
-            yield return new WaitForSeconds(1f / fadeSpeed);
+            yield return new WaitForSeconds(1f / settings.animationSpeed);
 
             switch (selectedMenu)
             {
@@ -146,7 +148,7 @@ public class TitleUI : MonoBehaviour
         if (whichFade == "in" || whichFade == "both")
         {
             fadeAnimator.Play("FadeIn");
-            yield return new WaitForSeconds(1f / fadeSpeed);
+            yield return new WaitForSeconds(1f / settings.animationSpeed);
         }
 
         fadeTransition.SetActive(false);

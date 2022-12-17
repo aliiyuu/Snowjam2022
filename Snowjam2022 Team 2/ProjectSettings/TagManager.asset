@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Interactable
   - Menu
+  - Settings
   layers:
   - Default
   - TransparentFX
