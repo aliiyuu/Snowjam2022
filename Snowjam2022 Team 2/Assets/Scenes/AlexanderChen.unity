@@ -973,7 +973,7 @@ GameObject:
   - component: {fileID: 719698079}
   - component: {fileID: 719698078}
   - component: {fileID: 719698077}
-  - component: {fileID: 719698076}
+  - component: {fileID: 719698081}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -981,35 +981,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &719698076
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 719698075}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1fda945f8009f4d43a4dfdf1e258a6d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameplaySceneName: Main
-  fadeTransition: {fileID: 1315264515}
-  fadeSpeed: 1
-  menus:
-  - {fileID: 608378355}
-  healthMask: {fileID: 866429638}
-  healthMaskRange:
-  - 190
-  - 0
-  temperatureMask: {fileID: 253276586}
-  temperatureMaskRange:
-  - 170
-  - 0
-  timeMask: {fileID: 178350781}
-  timeMaskRange:
-  - 150
-  - 0
 --- !u!114 &719698077
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1097,6 +1068,34 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &719698081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 719698075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64691b624a8247a429da55496008ef10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  titleSceneName: 
+  fadeTransition: {fileID: 0}
+  fadeSpeed: 1
+  menus: []
+  healthMask: {fileID: 0}
+  healthMaskRange:
+  - 0
+  - 0
+  temperatureMask: {fileID: 0}
+  temperatureMaskRange:
+  - 0
+  - 0
+  timeMask: {fileID: 0}
+  timeMaskRange:
+  - 0
+  - 0
 --- !u!1 &811575323
 GameObject:
   m_ObjectHideFlags: 0
@@ -1527,7 +1526,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 719698076}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SceneUI, Assembly-CSharp
         m_MethodName: Settings
         m_Mode: 1
@@ -1661,7 +1660,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 719698076}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SceneUI, Assembly-CSharp
         m_MethodName: Back
         m_Mode: 1

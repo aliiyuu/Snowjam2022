@@ -26,7 +26,7 @@ public class TitleUI : MonoBehaviour
     [SerializeField] private float fadeSpeed = 1f;
 
     private Screen selectedMenu = Screen.Title;
-    private Screen previousMenu;
+    private List<Screen> previousMenus = new List<Screen>();
     [SerializeField] GameObject[] menus;
     private GameObject helpMenu;
     private GameObject creditsMenu;
@@ -36,6 +36,7 @@ public class TitleUI : MonoBehaviour
     {
         fadeAnimator = fadeTransition.GetComponent<Animator>();
         StartCoroutine(FadeButtonPressed("in"));
+        previousMenus.Add(selectedMenu);
 
         for (int i = 0; i < menus.Length; i++)
         {
@@ -62,46 +63,48 @@ public class TitleUI : MonoBehaviour
 
     public void Title()
     {
-        previousMenu = selectedMenu;
+        previousMenus.Add(selectedMenu);
         selectedMenu = Screen.Title;
         StartCoroutine(FadeButtonPressed("both"));
     }
 
     public void Play()
     {
-        previousMenu = selectedMenu;
+        previousMenus.Clear();
         selectedMenu = Screen.Play;
         StartCoroutine(FadeButtonPressed("both"));
     }
 
     public void Help()
     {
-        previousMenu = selectedMenu;
+        previousMenus.Add(selectedMenu);
         selectedMenu = Screen.Help;
         StartCoroutine(FadeButtonPressed("both"));
     }
     public void Credits()
     {
-        previousMenu = selectedMenu;
+        previousMenus.Add(selectedMenu);
         selectedMenu = Screen.Credits;
         StartCoroutine(FadeButtonPressed("both"));
     }
     public void Settings()
     {
-        previousMenu = selectedMenu;
+        previousMenus.Add(selectedMenu);
         selectedMenu = Screen.Settings;
         StartCoroutine(FadeButtonPressed("both"));
     }
     public void Quit()
     {
-        previousMenu = selectedMenu;
+        previousMenus.Clear();
         selectedMenu = Screen.Quit;
         StartCoroutine(FadeButtonPressed("both"));
     }
 
     public void Back() // Go back to the Title screen from the UI
     {
-        selectedMenu = previousMenu;
+        selectedMenu = previousMenus[previousMenus.Count - 1];
+        previousMenus.RemoveAt(previousMenus.Count - 1);
+
         StartCoroutine(FadeButtonPressed("both"));
     }
 
@@ -124,7 +127,7 @@ public class TitleUI : MonoBehaviour
                     }
                     break;
                 case Screen.Play:
-                    SceneManager.LoadScene("Main");
+                    SceneManager.LoadScene(gameplaySceneName);
                     break;
                 case Screen.Help:
                     helpMenu.SetActive(true);

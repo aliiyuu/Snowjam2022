@@ -13,15 +13,13 @@ public class GameUI : MonoBehaviour
     {
         Title,
         Play,
-        Help,
-        Credits,
         Settings,
         Inventory,
         Quit
     }
 
     // Variables
-    [SerializeField] private string gameplaySceneName;
+    [SerializeField] private string titleSceneName;
     [SerializeField] private GameObject fadeTransition;
     private Animator fadeAnimator;
     [SerializeField] private float fadeSpeed = 1f;
@@ -50,12 +48,6 @@ public class GameUI : MonoBehaviour
             menus[i].SetActive(false);
             switch(menus[i].name)
             {
-                case "Help":
-                    helpMenu = menus[i];
-                    break;
-                case "Credits":
-                    creditsMenu = menus[i];
-                    break;
                 case "Settings":
                     settingsMenu = menus[i];
                     break;
@@ -93,25 +85,6 @@ public class GameUI : MonoBehaviour
         StartCoroutine(FadeButtonPressed("both"));
     }
 
-    public void Play()
-    {
-        previousMenu = selectedMenu;
-        selectedMenu = Screen.Play;
-        StartCoroutine(FadeButtonPressed("both"));
-    }
-
-    public void Help()
-    {
-        previousMenu = selectedMenu;
-        selectedMenu = Screen.Help;
-        StartCoroutine(FadeButtonPressed("both"));
-    }
-    public void Credits()
-    {
-        previousMenu = selectedMenu;
-        selectedMenu = Screen.Credits;
-        StartCoroutine(FadeButtonPressed("both"));
-    }
     public void Settings()
     {
         previousMenu = selectedMenu;
@@ -143,31 +116,14 @@ public class GameUI : MonoBehaviour
             switch (selectedMenu)
             {
                 case Screen.Title:
+                    SceneManager.LoadScene(titleSceneName);
+                    break;
+                case Screen.Play:
                     // Close UI Interfaces
                     for (int i = 0; i < menus.Length; i++)
                     {
                         menus[i].SetActive(false);
                     }
-                    break;
-                case Screen.Play:
-                    if (previousMenu == Screen.Title)
-                    {
-                        SceneManager.LoadScene("Main");
-                    }
-                    else
-                    {
-                        // Close UI Interfaces
-                        for (int i = 0; i < menus.Length; i++)
-                        {
-                            menus[i].SetActive(false);
-                        }
-                    }
-                    break;
-                case Screen.Help:
-                    helpMenu.SetActive(true);
-                    break;
-                case Screen.Credits:
-                    creditsMenu.SetActive(true);
                     break;
                 case Screen.Settings:
                     settingsMenu.SetActive(true);
