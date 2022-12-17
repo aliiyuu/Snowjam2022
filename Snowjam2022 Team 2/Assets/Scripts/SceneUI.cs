@@ -33,6 +33,13 @@ public class SceneUI : MonoBehaviour
     private GameObject settingsMenu;
     private GameObject inventory;
 
+    [SerializeField] private GameObject healthMask;
+    [SerializeField] private float[] healthMaskRange = new float[2];
+    [SerializeField] private GameObject temperatureMask;
+    [SerializeField] private float[] temperatureMaskRange = new float[2];
+    [SerializeField] private GameObject timeMask;
+    [SerializeField] private float[] timeMaskRange = new float[2];
+
     void Start()
     {
         fadeAnimator = fadeTransition.GetComponent<Animator>();
@@ -57,13 +64,28 @@ public class SceneUI : MonoBehaviour
                     break;
             }
         }
-
     }
 
     void Update()
     {
         fadeAnimator.speed = fadeSpeed;
     }
+
+    public void SetHealthUI(float percent)
+    {
+        healthMask.transform.position = new Vector3(percent / 100f * (healthMaskRange[1] - healthMaskRange[0]) + healthMaskRange[0], healthMask.transform.position.y, healthMask.transform.position.z);
+    }
+
+    public void SetTemperatureUI(float percent)
+    {
+        temperatureMask.GetComponent<RectMask2D>().padding = new Vector4(temperatureMask.GetComponent<RectMask2D>().padding.x, temperatureMask.GetComponent<RectMask2D>().padding.y, percent / 100f * (temperatureMaskRange[1] - temperatureMaskRange[0]) + temperatureMaskRange[0], temperatureMask.GetComponent<RectMask2D>().padding.w);
+    }
+
+    public void SetTimeUI(float percent)
+    {
+        timeMask.transform.position = new Vector3(percent / 100f * (timeMaskRange[1] - timeMaskRange[0]) + timeMaskRange[0], timeMask.transform.position.y, timeMask.transform.position.z);
+    }
+
     public void Title()
     {
         previousMenu = selectedMenu;
@@ -139,7 +161,7 @@ public class SceneUI : MonoBehaviour
                         {
                             menus[i].SetActive(false);
                         }
-                    }    
+                    }
                     break;
                 case Screen.Help:
                     helpMenu.SetActive(true);
@@ -165,5 +187,5 @@ public class SceneUI : MonoBehaviour
         }
 
         fadeTransition.SetActive(false);
-    }    
+    }
 }
