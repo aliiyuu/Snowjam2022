@@ -18,16 +18,16 @@ public class Tree : Interactable
         
     }
 
-    public override void Interact(PlayerInteract playerInteract)
+    public override void Interact(PlayerController playerController)
     {
         //do nothing
     }
-    public override void HoldInteract(PlayerInteract playerInteract)
+    public override void HoldInteract(PlayerController playerController)
     {
         chopTime += Time.deltaTime; //the player calls this function off of update() so this works
-        if(chopTime > playerInteract.GetChoppingTime())
+        if(chopTime > playerController.GetChoppingTime())
         {
-            playerInteract.AddItem("wood"); //just 1 wood per tree?
+            playerController.AddItem("wood"); //just 1 wood per tree?
             Destroy(gameObject);
         }
     }
