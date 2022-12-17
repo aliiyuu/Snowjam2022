@@ -14,15 +14,17 @@ public class GameUI : MonoBehaviour
         Title,
         Play,
         Settings,
-        Inventory,
-        Quit
+        Inventory
     }
 
     // Variables
     [SerializeField] private string titleSceneName;
+    [SerializeField] private GameObject menuTransition;
     [SerializeField] private GameObject fadeTransition;
     private Animator fadeAnimator;
-    [SerializeField] private float fadeSpeed = 4f;
+    private Animator menuAnimator;
+    private Settings settings;
+
     private Screen selectedMenu = Screen.Title;
     private Screen previousMenu;
     [SerializeField] GameObject[] menus;
@@ -39,7 +41,8 @@ public class GameUI : MonoBehaviour
     void Start()
     {
         fadeAnimator = fadeTransition.GetComponent<Animator>();
-        StartCoroutine(FadeButtonPressed("in"));
+        menuAnimator = menuTransition.GetComponent<Animator>();
+        settings = GameObject.FindGameObjectWithTag("Settings").GetComponent<Settings>();
 
         for (int i = 0; i < menus.Length; i++)
         {
@@ -54,11 +57,14 @@ public class GameUI : MonoBehaviour
                     break;
             }
         }
+
+        fadeAnimator.Play("FadeOut");
+        fadeTransition.SetActive(false);
     }
 
     void Update()
     {
-        fadeAnimator.speed = fadeSpeed;
+        fadeAnimator.speed = settings.animationSpeed;
     }
 
     public void SetHealthUI(float percent)
@@ -80,66 +86,62 @@ public class GameUI : MonoBehaviour
     {
         previousMenu = selectedMenu;
         selectedMenu = Screen.Title;
-        StartCoroutine(FadeButtonPressed("both"));
+        StartCoroutine(Transition());
     }
 
     public void Settings()
     {
         previousMenu = selectedMenu;
         selectedMenu = Screen.Settings;
-        StartCoroutine(FadeButtonPressed("both"));
+        StartCoroutine(Transition());
     }
-    public void Quit()
+
+    public void Inventory()
     {
         previousMenu = selectedMenu;
-        selectedMenu = Screen.Quit;
-        StartCoroutine(FadeButtonPressed("both"));
+        selectedMenu = Screen.Inventory;
+        StartCoroutine(Transition());
     }
 
     public void Back() // Go back to the Title or Play screen from the UI
     {
         selectedMenu = Screen.Play;
-        StartCoroutine(FadeButtonPressed("both"));
+        StartCoroutine(Transition());
     }
 
-    IEnumerator FadeButtonPressed(string whichFade)
+    IEnumerator Transition()
     {
-        fadeTransition.SetActive(true);
-
-        if (whichFade == "out" || whichFade == "both")
+        switch (selectedMenu)
         {
-            fadeAnimator.Play("FadeOut");
-            yield return new WaitForSeconds(1f / fadeSpeed);
+            case Screen.Title:
+                fadeTransition.SetActive(true);
+                fadeAnimator.Play("FadeOut");
+                yield return new WaitForSeconds(1f / settings.animationSpeed);
+                SceneManager.LoadScene(titleSceneName);
+                break;
 
-            switch (selectedMenu)
-            {
-                case Screen.Title:
-                    SceneManager.LoadScene(titleSceneName);
-                    break;
-                case Screen.Play:
-                    // Close UI Interfaces
-                    for (int i = 0; i < menus.Length; i++)
-                    {
-                        menus[i].SetActive(false);
-                    }
-                    break;
-                case Screen.Settings:
-                    settingsMenu.SetActive(true);
-                    break;
-                case Screen.Inventory:
-                    inventory.SetActive(true);
-                    break;
-                case Screen.Quit:
-                    Application.Quit();
-                    break;
-            }
-        }
-        if (whichFade == "in" || whichFade == "both")
-        {
-            fadeAnimator.Play("FadeIn");
-            yield return new WaitForSeconds(1f / fadeSpeed);
-        }
+            case Screen.Play:
+                // Close UI Interfaces
+                menuAnimator.Play("MenuHide");
+                yield return new WaitForSeconds(1f / settings.animationSpeed);
+                for (int i = 0; i < menus.Length; i++)
+                {
+                    menus[i].SetActive(false);
+                }
+                break;
 
-        fadeTransition.SetActive(false);
+            case Screen.Settings:
+                settingsMenu.SetActive(true);
+                menuAnimator.Play("MenuShow");
+                yield return new WaitForSeconds(1f / settings.animationSpeed);
+                break;
+
+            case Screen.Inventory:
+                inventory.SetActive(true);
+                menuAnimator.Play("MenuShow");
+                yield return new WaitForSeconds(1f / settings.animationSpeed);
+                break;
+
+        }
     }
 }
