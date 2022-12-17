@@ -18,12 +18,12 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float roamMaxDuration = 4f, idleMaxDuration = 7f;
     private float roamDuration, idleDuration;
 
-    [SerializeField] private float damage;
+    [SerializeField] private int damage = 3;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        target = GameObject.Find("Player").transform; //maybe have an aggro radius?
+        target = FindObjectOfType<PlayerController>().transform; //maybe have an aggro radius?
         playerMask = LayerMask.GetMask("Player");
         InitiateRoaming();
     }
@@ -95,6 +95,13 @@ public class Enemy : MonoBehaviour
             idleDuration = Random.Range(0f, idleMaxDuration);
 
             moveDirection = Vector2.zero;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other) {
+        if (other.tag == "Player")
+        {
+            target.GetComponent<PlayerController>().ChangeHealth(-damage);
         }
     }
 }

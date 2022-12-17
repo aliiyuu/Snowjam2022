@@ -21,6 +21,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] //need to see it in editor for testing
     private int health; //health. 
     private int maxHealth;
+    public bool isInvulnerable {get; private set;}
+    private float invulnTimer;
+    private float invulnDuration;
     [SerializeField] //so you can see freeze levels in editor
     private float freeze; //how frozen the player is.
     private float maxFreeze;
@@ -43,6 +46,9 @@ void Start()
     {
         health = 100; //who knows, maybe up this
         maxHealth = 100;
+        isInvulnerable = false;
+        invulnTimer = 0f;
+        invulnDuration = 1f; //could change
         freeze = 0;
         maxFreeze = 100;
 
@@ -61,6 +67,12 @@ void Start()
     // Update is called once per frame
     void Update()
     {
+        //damage cooldown
+        if (isInvulnerable)
+        {
+            invulnTimer += Time.deltaTime;
+        }
+
         //movement
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
@@ -195,7 +207,21 @@ void Start()
 
     public void ChangeHealth(int healthToAdd)
     {
-        health += healthToAdd;
+        if (isInvulnerable && healthToAdd < 0) {} // If invuln + taking damage, don't add damage
+        else health += healthToAdd;
+        if (healthToAdd < 0) // Implements cooldown from taking damage
+        {
+            if (!isInvulnerable)
+            {
+                isInvulnerable = true;
+            }
+            else if (invulnTimer > invulnDuration)
+            {
+                isInvulnerable = false;
+                invulnTimer = 0f;
+            }
+        }
+        
         if(health > maxHealth)
         {
             health = maxHealth;
