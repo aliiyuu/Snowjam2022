@@ -17,6 +17,9 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private float freezeMultiplier;
+    [SerializeField]
+    private float freezeDamageInterval;
+    private float freezeTimer;
 
 
     private PlayerController playerController;
@@ -24,6 +27,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        freezeTimer = 0;
         timer = 0;
         tempLevel = 0;
         waveNum = 1;
@@ -55,6 +59,15 @@ public class GameManager : MonoBehaviour
         playerController.ChangeFreeze((tempLevel - playerController.GetHeat()) * Time.deltaTime * freezeMultiplier);
 
         //check freeze damage after freezing player
+        if(playerController.GetFreeze() >= 100)
+        {
+            freezeTimer += Time.deltaTime;
+            if (freezeTimer >= freezeDamageInterval)
+            {
+                playerController.ChangeHealth(-1);
+                freezeTimer = 0;
+            }
+        }
     }
 
     private void tempDecrease()

@@ -771,7 +771,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waveInterval: 10
   tempChangeTimings: 03000000070000000f000000
-  freezeMultiplier: 0.001
+  freezeMultiplier: 1
+  freezeDamageInterval: 0.5
 --- !u!1 &1455543509
 GameObject:
   m_ObjectHideFlags: 0
