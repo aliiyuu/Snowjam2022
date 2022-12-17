@@ -13,10 +13,15 @@ public class PlayerInteract : MonoBehaviour
 
     private int heatLevel;
 
+    [SerializeField]
+    int heatDegradeTime;
+
     // Start is called before the first frame update
     void Start()
     {
         heatLevel = 0; //maybe change
+        inv["torch"] = 0;
+        inv["wood"] = 3;
     }
 
     // Update is called once per frame
@@ -29,10 +34,13 @@ public class PlayerInteract : MonoBehaviour
             //interactList[0].Interact(this);
             //interactList.RemoveAt(0);
         }
+
+        //torch
+        if(Input.GetKeyDown(KeyCode.Q) && inv["torch"] > 0)
+        {
+            UseTorch();
+        }
     }
-
-   
-
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -69,6 +77,39 @@ public class PlayerInteract : MonoBehaviour
         Debug.Log(inv[item]);
     }
 
+    public void RemoveItem(string item)
+    {
+        try
+        {
+            if(inv[item] > 0)
+            {
+                inv[item] -= 1;
+            }
+        }
+        catch
+        {
+            return;
+        }
+    }
+
+    public int GetItem(string item)
+    {
+        try
+        {
+            return inv[item];
+        }
+        catch
+        {
+            return 0;
+        }
+
+    }
+
+    private void UseTorch()
+    {
+        inv["torch"] -= 1;
+        Debug.Log("torch moment");
+    }
 
     public int GetHeat()
     {

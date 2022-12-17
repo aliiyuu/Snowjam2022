@@ -369,6 +369,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bcf722b3cd49de4f837f2efe0b48ac4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  heatDegradeTime: 0
 --- !u!50 &962720117
 Rigidbody2D:
   serializedVersion: 4
@@ -759,7 +760,7 @@ GameObject:
   - component: {fileID: 1584301445}
   m_Layer: 0
   m_Name: Fire
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -892,6 +893,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: Fire
+  heatDegradeTime: 5
 --- !u!1 &1735053754
 GameObject:
   m_ObjectHideFlags: 0
@@ -1013,6 +1015,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heatLevel: 0
+  maxHeat: 2
+  minHeat: 0
+  player: {fileID: 0}
 --- !u!61 &1735053760
 BoxCollider2D:
   m_ObjectHideFlags: 0
