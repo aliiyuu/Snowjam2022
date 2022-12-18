@@ -16,8 +16,9 @@ public class HeatSource : MonoBehaviour
     private bool playerInRadius;
     public PlayerController player;
 
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         player = GameObject.Find("Player").GetComponent<PlayerController>();
         playerInRadius = false; //change for starting campfire, probably?
