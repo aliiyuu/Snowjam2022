@@ -26,11 +26,11 @@ public class Plant : Interactable
             float random = Random.Range(1, 10);
             if(random < 9)
             {
-                playerController.AddItem("plant matter");
+                playerController.AddItem("Plant Matter");
             }
             else
             {
-                playerController.AddItem("herbs"); //% chance to get herbs
+                playerController.AddItem("Herbs"); //% chance to get herbs
             }
             Destroy(gameObject);
         }   

@@ -9,7 +9,7 @@ public class Fishing : Interactable
 
     public override void Interact(PlayerController playerController)
     {
-        if(playerController.GetItem("fishing rod") > -1)
+        if(playerController.GetItem("Fishing Rod") > 0)
         {
             Debug.Log("starting fish");
             playerController.Fish(); 

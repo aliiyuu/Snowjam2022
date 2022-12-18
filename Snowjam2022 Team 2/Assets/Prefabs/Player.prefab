@@ -100,7 +100,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bcf722b3cd49de4f837f2efe0b48ac4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  craftList: []
+  craftList:
+  - requiredMaterials:
+    - Wood
+    itemName: Stick
+    itemType: 0
+  - requiredMaterials:
+    - Stick
+    - Plant Matter
+    itemName: Torch
+    itemType: 3
+  - requiredMaterials:
+    - Herb
+    - Herb
+    itemName: Medicine
+    itemType: 3
+  - requiredMaterials:
+    - Stone
+    - Stone
+    itemName: Stove
+    itemType: 2
   heatLevel: 0
   choppingTime: 3
   health: 0

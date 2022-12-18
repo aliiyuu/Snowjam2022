@@ -146,4 +146,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 709c9a93a503a6c4292b8614c414ba2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: stone
+  itemName: Stone
