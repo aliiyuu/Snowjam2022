@@ -33,6 +33,9 @@ public class PlayerController : MonoBehaviour
 
     private GameUI gameUI; // Get sceneUI
 
+    //torch
+    int usingTorch;
+    [SerializeField] int torchBurnTime = 30;
 
     //player movement
     public float moveSpeed = 5f;
@@ -65,6 +68,7 @@ public class PlayerController : MonoBehaviour
         //changed to awake for efficiency
     void Awake()
     {
+        usingTorch = 0;
         health = 100; //who knows, maybe up this
         maxHealth = 100;
         isInvulnerable = false;
@@ -74,10 +78,14 @@ public class PlayerController : MonoBehaviour
         maxFreeze = 100;
 
         heatLevel = 0; //maybe change
-        inv["torch"] = 0; //this one needs to be here 
+        inv["Torch"] = 0; //this one needs to be here 
+        //inv["Wood"] = 0; 
+        //inv["Stick"] = 0;
 
         //numbers for testing, mostly
-        inv["wood"] = 3;
+        //inv["Wood"] = 3;
+        inv["Torch"] = 5;
+        inv["Stick"] = 2;
 
         rb = this.GetComponent<Rigidbody2D>();
         animator = this.GetComponent<Animator>();
@@ -112,9 +120,9 @@ public class PlayerController : MonoBehaviour
             lastInteract.HoldInteract(this); //used for tree chopping/other long interactions
         }
         //torch
-        if (Input.GetKeyDown(KeyCode.Q) && inv["torch"] > 0)
+        if (Input.GetKeyDown(KeyCode.Q) && inv["Torch"] > 0)
         {
-            UseTorch(); //TODO
+            StartCoroutine(UseTorch()); //TODO
         }
 
         if(Input.GetMouseButtonDown(0) && attackCooldownTimer <= 0)
@@ -141,7 +149,7 @@ public class PlayerController : MonoBehaviour
         }
         if (catchChance && Input.GetMouseButtonDown(0))
         {
-            AddItem("fish");
+            AddItem("Fish");
             catchChance = false;
             fishing = false;
         }
@@ -232,12 +240,27 @@ public class PlayerController : MonoBehaviour
     }
 
     //torch
-    private void UseTorch()
+    private IEnumerator UseTorch()
     {
-        inv["torch"] -= 1;
+        inv["Torch"] -= 1;
         Debug.Log("torch moment");
+        usingTorch += 1; //using an int so if you start burning a second torch it "resets" the timer.
+        yield return new WaitForSeconds(torchBurnTime);
+        usingTorch -= 1;
     }
 
+    public bool UsingTorch()
+    {
+        if (usingTorch > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+            
+    }
 
     //heat
     public int GetHeat()
@@ -318,16 +341,18 @@ public class PlayerController : MonoBehaviour
 
     //crafting
 
-    public void craft(CraftableItem item)
+    public bool Craft(CraftableItem item)
     {
         bool success = true;
+        Dictionary<string, int> tempInv = inv;
+
         foreach (string material in item.requiredMaterials)
         {
             try
             {
-                if(inv[material] > 0)
+                if(tempInv[material] > 0)
                 {
-                    inv[material] -= 1;
+                    tempInv[material] -= 1;
                 }
                 else
                 {
@@ -343,8 +368,24 @@ public class PlayerController : MonoBehaviour
         }
         if(success)
         {
-            inv[item.itemName] += 1; //todo; handle the different types
+            if (tempInv.ContainsKey(item.itemName))
+            {
+                tempInv[item.itemName] += 1; //todo; handle the different types
+            }
+            else
+            {
+                tempInv.Add(item.itemName, 1);
+            }
+                
+            
+            inv = tempInv;
         }
+        return success;
+    }
+
+    public List<CraftableItem> getCraftableItems()
+    {
+        return craftList;
     }
 
 

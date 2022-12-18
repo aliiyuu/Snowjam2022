@@ -27,7 +27,7 @@ public class Tree : Interactable
         chopTime += Time.deltaTime; //the player calls this function off of update() so this works
         if(chopTime > playerController.GetChoppingTime())
         {
-            playerController.AddItem("wood"); //just 1 wood per tree?
+            playerController.AddItem("Wood"); //just 1 wood per tree?
             Destroy(gameObject);
         }
     }
