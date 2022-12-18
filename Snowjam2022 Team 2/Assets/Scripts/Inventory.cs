@@ -41,8 +41,13 @@ public class Inventory : MonoBehaviour
     void Update() // Might want to change this to only update when the inventory changes instead of every frame
     {
         if (craftList.Count == 0 || itemList.Length == 0) return; // Don't run this script if there's no craftables or items
+        if (craftList.Count != craftSprites.Length)
+        {
+            Debug.Log("Check the crafting lists in the Player and Inventory to make sure they line up");
+            return;
+        }
 
-        itemDict = player.GetDict();
+            itemDict = player.GetDict();
 
         int itemSlot = 0;
         foreach(KeyValuePair<string, int> item in itemDict)

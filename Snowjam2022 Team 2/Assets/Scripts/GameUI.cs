@@ -11,8 +11,8 @@ public class GameUI : MonoBehaviour
 {
     enum Screen
     {
-        Title,
         Play,
+        Title,
         Settings,
         Inventory
     }
@@ -21,11 +21,12 @@ public class GameUI : MonoBehaviour
     [SerializeField] private string titleSceneName;
     [SerializeField] private GameObject menuTransition;
     [SerializeField] private GameObject fadeTransition;
+    private bool currentlyTransitioning = false;
     private Animator fadeAnimator;
     private Animator menuAnimator;
     private Settings settings;
 
-    private Screen selectedMenu = Screen.Title;
+    private Screen selectedMenu = Screen.Play;
     private Screen previousMenu;
     [SerializeField] GameObject[] menus;
     private GameObject settingsMenu;
@@ -66,8 +67,9 @@ public class GameUI : MonoBehaviour
     {
         fadeAnimator.speed = settings.animationSpeed;
 
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.Tab) && !currentlyTransitioning)
         {
+            Debug.Log("TAB" + selectedMenu);
             if (selectedMenu == Screen.Play) Inventory();
             else if (selectedMenu == Screen.Inventory) Back();
         }
@@ -117,6 +119,7 @@ public class GameUI : MonoBehaviour
 
     IEnumerator Transition()
     {
+        currentlyTransitioning = true;
         switch (selectedMenu)
         {
             case Screen.Title:
@@ -130,10 +133,10 @@ public class GameUI : MonoBehaviour
                 // Close UI Interfaces
                 menuAnimator.Play("MenuHide");
                 yield return new WaitForSeconds(1f / settings.animationSpeed);
-                for (int i = 0; i < menus.Length; i++)
-                {
-                    menus[i].SetActive(false);
-                }
+                //for (int i = 0; i < menus.Length; i++)
+                //{
+                //    menus[i].SetActive(false);
+                //}
                 break;
 
             case Screen.Settings:
@@ -155,5 +158,6 @@ public class GameUI : MonoBehaviour
                 break;
 
         }
+        currentlyTransitioning = false;
     }
 }

@@ -91446,6 +91446,10 @@ PrefabInstance:
       value: Wood
       objectReference: {fileID: 0}
     - target: {fileID: 1359302486735663907, guid: 07dce66048ea9914bb50a3ce80704368, type: 3}
+      propertyPath: craftList.Array.data[2].itemName
+      value: Torch
+      objectReference: {fileID: 0}
+    - target: {fileID: 1359302486735663907, guid: 07dce66048ea9914bb50a3ce80704368, type: 3}
       propertyPath: craftList.Array.data[0].requiredMaterials.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -91454,12 +91458,28 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1359302486735663907, guid: 07dce66048ea9914bb50a3ce80704368, type: 3}
+      propertyPath: craftList.Array.data[2].requiredMaterials.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1359302486735663907, guid: 07dce66048ea9914bb50a3ce80704368, type: 3}
       propertyPath: craftList.Array.data[0].requiredMaterials.Array.data[0]
       value: Wood
       objectReference: {fileID: 0}
     - target: {fileID: 1359302486735663907, guid: 07dce66048ea9914bb50a3ce80704368, type: 3}
       propertyPath: craftList.Array.data[1].requiredMaterials.Array.data[0]
       value: Stick
+      objectReference: {fileID: 0}
+    - target: {fileID: 1359302486735663907, guid: 07dce66048ea9914bb50a3ce80704368, type: 3}
+      propertyPath: craftList.Array.data[2].requiredMaterials.Array.data[0]
+      value: Stick
+      objectReference: {fileID: 0}
+    - target: {fileID: 1359302486735663907, guid: 07dce66048ea9914bb50a3ce80704368, type: 3}
+      propertyPath: craftList.Array.data[2].requiredMaterials.Array.data[1]
+      value: Stick
+      objectReference: {fileID: 0}
+    - target: {fileID: 1359302486735663907, guid: 07dce66048ea9914bb50a3ce80704368, type: 3}
+      propertyPath: craftList.Array.data[2].requiredMaterials.Array.data[2]
+      value: Wood
       objectReference: {fileID: 0}
     - target: {fileID: 1359302486735663911, guid: 07dce66048ea9914bb50a3ce80704368, type: 3}
       propertyPath: m_Name
