@@ -78,11 +78,14 @@ public class PlayerController : MonoBehaviour
         maxFreeze = 100;
 
         heatLevel = 0; //maybe change
-        inv["torch"] = 0; //this one needs to be here 
+        inv["Torch"] = 0; //this one needs to be here 
+        inv["Wood"] = 0; 
+        inv["Stick"] = 0;
 
         //numbers for testing, mostly
-        inv["wood"] = 3;
-        inv["torch"] = 5;
+        inv["Wood"] = 3;
+        inv["Torch"] = 5;
+        inv["Stick"] = 1;
 
         rb = this.GetComponent<Rigidbody2D>();
         animator = this.GetComponent<Animator>();
@@ -338,16 +341,18 @@ public class PlayerController : MonoBehaviour
 
     //crafting
 
-    public void craft(CraftableItem item)
+    public bool Craft(CraftableItem item)
     {
         bool success = true;
+        Dictionary<string, int> tempInv = inv;
+
         foreach (string material in item.requiredMaterials)
         {
             try
             {
-                if(inv[material] > 0)
+                if(tempInv[material] > 0)
                 {
-                    inv[material] -= 1;
+                    tempInv[material] -= 1;
                 }
                 else
                 {
@@ -363,8 +368,17 @@ public class PlayerController : MonoBehaviour
         }
         if(success)
         {
-            inv[item.itemName] += 1; //todo; handle the different types
+            tempInv[item.itemName] += 1; //todo; handle the different types
+
+            inv = tempInv;
+            Debug.Log("yay");
         }
+        return success;
+    }
+
+    public List<CraftableItem> getCraftableItems()
+    {
+        return craftList;
     }
 
 
