@@ -9,6 +9,7 @@ TagManager:
   - Settings
   - InventoryItems
   - CraftingItems
+  - CraftingDescription
   layers:
   - Default
   - TransparentFX

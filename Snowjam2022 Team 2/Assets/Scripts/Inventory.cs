@@ -15,12 +15,14 @@ public class Inventory : MonoBehaviour
     private GameObject[] itemSlots;
     private Dictionary<string, int> itemDict;
     [SerializeField] Sprite[] itemSprites;
-    [SerializeField] string[] itemList = {"wood", "stick"};
+    [SerializeField] string[] itemList;
 
     int craftSlot = 0;
     private GameObject[] craftSlots; // 3 Crafting slots, scrollable
     [SerializeField] Sprite[] craftSprites;
-    [SerializeField] string[] craftList = { "stick" };
+    private List<CraftableItem> craftList;
+    private TMP_Text craftDescription;
+    private string craftStatus = "";
 
     // Start is called before the first frame update
     void Start()
@@ -30,39 +32,44 @@ public class Inventory : MonoBehaviour
 
         itemSlots = GameObject.FindGameObjectsWithTag("InventoryItems");
         craftSlots = GameObject.FindGameObjectsWithTag("CraftingItems");
+
+        craftList = player.getCraftableItems();
+        craftDescription = GameObject.FindGameObjectWithTag("CraftingDescription").GetComponent<TMP_Text>();
     }
 
     // Update is called once per frame
     void Update() // Might want to change this to only update when the inventory changes instead of every frame
     {
-        if (craftList.Length == 0 || itemList.Length == 0) return; // Don't run this script if there's no craftables or items
+        if (craftList.Count == 0 || itemList.Length == 0) return; // Don't run this script if there's no craftables or items
 
         itemDict = player.GetDict();
 
         int itemSlot = 0;
         foreach(KeyValuePair<string, int> item in itemDict)
         {
-            Debug.Log(item);
             if (itemList.Contains(item.Key)) // If it's an inventory item, add to inventory
             {
-                // Find the index of the sprite in itemList
-                int spriteIndex = 0;
-                while (!itemList[spriteIndex].Equals(item.Key))
+                if (item.Value > 0)
                 {
-                    spriteIndex++;
+                    // Find the index of the sprite in itemList
+                    int spriteIndex = 0;
+                    while (!itemList[spriteIndex].Equals(item.Key))
+                    {
+                        spriteIndex++;
+                    }
+
+                    // Update Icon at itemSlot
+                    itemSlots[itemSlot].GetComponentsInChildren<Image>()[1].sprite = itemSprites[spriteIndex];
+
+                    // Update Count at itemSlot
+                    itemSlots[itemSlot].GetComponentInChildren<TMP_Text>().text = "" + item.Value;
+
+                    itemSlot++;
                 }
-
-                // Update Icon at itemSlot
-                itemSlots[itemSlot].GetComponentsInChildren<Image>()[1].sprite = itemSprites[spriteIndex];
-
-                // Update Count at itemSlot
-                itemSlots[itemSlot].GetComponentInChildren<TMP_Text>().text = "" + item.Value;
-
-                itemSlot++;
             }
             else
             {
-                Debug.Log("Item not found, define the object in the Inventory");
+                //Debug.Log("Item not found, define the object in the Inventory");
             }
         }
         // Blank out the rest of the inventory slots
@@ -75,7 +82,7 @@ public class Inventory : MonoBehaviour
 
         // Crafting display
         craftSlots[1].GetComponentsInChildren<Image>()[1].sprite = craftSprites[craftSlot];
-        if (craftSlot < craftList.Length-1)
+        if (craftSlot < craftList.Count - 1)
         {
             craftSlots[2].GetComponentsInChildren<Image>()[1].sprite = craftSprites[craftSlot + 1];
         }
@@ -89,8 +96,18 @@ public class Inventory : MonoBehaviour
         }
         else
         {
-            craftSlots[0].GetComponentsInChildren<Image>()[1].sprite = craftSprites[craftList.Length-1];
+            craftSlots[0].GetComponentsInChildren<Image>()[1].sprite = craftSprites[craftList.Count - 1];
         }
+        // Required materials window
+        List<string> materialsList = craftList[craftSlot].requiredMaterials;
+        
+        craftDescription.text = materialsList[0];
+        for (int i = 1; i < materialsList.Count; i++)
+        {
+            craftDescription.text += ", " + materialsList[i];
+        }
+        //Crafting status
+        craftDescription.text += "\n\n" + craftStatus;
 
     }
 
@@ -101,11 +118,11 @@ public class Inventory : MonoBehaviour
             if (craftSlot > 0)
                 craftSlot--;
             else
-                craftSlot = craftList.Length - 1;
+                craftSlot = craftList.Count - 1;
         }
         else if (dir.ToLower() == "right")
         {
-            if (craftSlot < craftList.Length - 1)
+            if (craftSlot < craftList.Count - 1)
                 craftSlot++;
             else
                 craftSlot = 0;
@@ -116,4 +133,17 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    public void CraftThisItem()
+    {
+        bool success = player.Craft(craftList[craftSlot]);
+
+        if (success)
+        {
+            craftStatus = "";
+        }
+        else
+        {
+            craftStatus = "<color=red>Crafting failed! Not enough resources.</color>";
+        }
+    }
 }
