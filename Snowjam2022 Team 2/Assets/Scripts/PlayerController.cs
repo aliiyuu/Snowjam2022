@@ -79,13 +79,13 @@ public class PlayerController : MonoBehaviour
 
         heatLevel = 0; //maybe change
         inv["Torch"] = 0; //this one needs to be here 
-        inv["Wood"] = 0; 
-        inv["Stick"] = 0;
+        //inv["Wood"] = 0; 
+        //inv["Stick"] = 0;
 
         //numbers for testing, mostly
-        inv["Wood"] = 3;
+        //inv["Wood"] = 3;
         inv["Torch"] = 5;
-        inv["Stick"] = 1;
+        inv["Stick"] = 2;
 
         rb = this.GetComponent<Rigidbody2D>();
         animator = this.GetComponent<Animator>();
@@ -120,7 +120,7 @@ public class PlayerController : MonoBehaviour
             lastInteract.HoldInteract(this); //used for tree chopping/other long interactions
         }
         //torch
-        if (Input.GetKeyDown(KeyCode.Q) && inv["torch"] > 0)
+        if (Input.GetKeyDown(KeyCode.Q) && inv["Torch"] > 0)
         {
             StartCoroutine(UseTorch()); //TODO
         }
@@ -149,7 +149,7 @@ public class PlayerController : MonoBehaviour
         }
         if (catchChance && Input.GetMouseButtonDown(0))
         {
-            AddItem("fish");
+            AddItem("Fish");
             catchChance = false;
             fishing = false;
         }
@@ -242,7 +242,7 @@ public class PlayerController : MonoBehaviour
     //torch
     private IEnumerator UseTorch()
     {
-        inv["torch"] -= 1;
+        inv["Torch"] -= 1;
         Debug.Log("torch moment");
         usingTorch += 1; //using an int so if you start burning a second torch it "resets" the timer.
         yield return new WaitForSeconds(torchBurnTime);
@@ -368,10 +368,17 @@ public class PlayerController : MonoBehaviour
         }
         if(success)
         {
-            tempInv[item.itemName] += 1; //todo; handle the different types
-
+            if (tempInv.ContainsKey(item.itemName))
+            {
+                tempInv[item.itemName] += 1; //todo; handle the different types
+            }
+            else
+            {
+                tempInv.Add(item.itemName, 1);
+            }
+                
+            
             inv = tempInv;
-            Debug.Log("yay");
         }
         return success;
     }

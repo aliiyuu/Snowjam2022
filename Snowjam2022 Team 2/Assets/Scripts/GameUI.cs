@@ -65,6 +65,12 @@ public class GameUI : MonoBehaviour
     void Update()
     {
         fadeAnimator.speed = settings.animationSpeed;
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (selectedMenu == Screen.Play) Inventory();
+            else if (selectedMenu == Screen.Inventory) Back();
+        }
     }
 
     public void SetHealthUI(float percent)

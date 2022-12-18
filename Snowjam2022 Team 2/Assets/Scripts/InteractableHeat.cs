@@ -26,11 +26,11 @@ public class InteractableHeat : Interactable
     public override void Interact(PlayerController playerController)
     {
         Debug.Log("This should show when you hit E, or I broke something lol");
-        if(heatSource.player.GetItem("wood") > 0 && heatSource.GetHeatLevel() < heatSource.GetMaxHeat())
+        if(heatSource.player.GetItem("Wood") > 0 && heatSource.GetHeatLevel() < heatSource.GetMaxHeat())
         {
             //heat source gets HOTTER with more fuel (and resets the burn timer) - comment this out if you want the other version. This is stronger, as each degrade reduces heat and restarts the timer
             heatSource.ChangeHeatLevel(1);
-            heatSource.player.RemoveItem("wood");
+            heatSource.player.RemoveItem("Wood");
             heatTimer = 0;
 
             //uncomment this if you want the fire to burn only longer with more fuel - aka weaker.
@@ -38,12 +38,12 @@ public class InteractableHeat : Interactable
             if(heatSource.GetHeatLevel() > heatSource.GetMinHeat())
             {
                 heatTimer -= heatDegradeTime;
-                heatSource.player.RemoveItem("wood");
+                heatSource.player.RemoveItem("Wood");
             }
             else
             {
                 heatSource.ChangeHeatLevel(1);
-                heatSource.player.RemoveItem("wood");
+                heatSource.player.RemoveItem("Wood");
                 heatTimer = 0;
             }
             */
@@ -70,7 +70,7 @@ public class InteractableHeat : Interactable
 
     public virtual void DoAnimation()
     {
-        if(heatSource.GetHeatLevel() > heatSource.GetMinHeat())
+        if (heatSource.GetHeatLevel() > heatSource.GetMinHeat())
         {
             animator.SetBool("FireOn", true);
         }
